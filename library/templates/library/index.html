@@ -1,0 +1,12 @@
+<h1> Bienvenue sur le site de boocs (enfin) </h1>
+
+
+<ul>
+
+{% for book in liste %}
+    <li>
+        <a href="/book/{{ book.id }}">{{book}}</a>
+    </li>
+{% endfor %}
+
+</ul>
