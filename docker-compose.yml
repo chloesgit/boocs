@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: boocs-back
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    networks:
+      - boocsnet
+    volumes: # Persisting database even after removing/stopping the container
+      - ./back/data:/django-backend/data
+
+    command: gunicorn boocs.wsgi --bind 0.0.0.0:8000
+
+  nginx:
+    image: nginx:1.19.2-alpine
+    container_name: boocs-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80" # Front
+      - "443:443"
+      - "1080:1080" # Back
+      - "1443:1443"
+    volumes:
+      - ./ops/nginx:/etc/nginx/conf.d
+      #- ./data/certs:/etc/letsencrypt/live/macif/
+    networks:
+      - boocsnet
+
+networks:
+  boocsnet:
+    driver: bridge
