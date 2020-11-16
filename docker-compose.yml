@@ -11,9 +11,10 @@ services:
       - "8000:8000"
     networks:
       - boocsnet
-    volumes: # Persisting database even after removing/stopping the container
-      - ./data:/django-backend/data
-      - ./static:/django-backend/static
+    volumes: # Persisting files even after removing/stopping the container
+      - ./:/django-backend/ # whole folder (useful for hot refresh in dev)
+      #- ./data:/django-backend/data # database
+      #- ./static:/django-backend/static # static files (css, js...)
 
     command: gunicorn boocs.wsgi --bind 0.0.0.0:8000
 
