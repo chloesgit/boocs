@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.3"
 
 services:
   django:
@@ -13,23 +13,23 @@ services:
       - boocsnet
     volumes: # Persisting files even after removing/stopping the container
       - ./:/django-backend/ # whole folder (useful for hot refresh in dev)
-      #- ./data:/django-backend/data # database
-      #- ./static:/django-backend/static # static files (css, js...)
+      #- ./data:/django-backend/data # only database
+      #- ./static:/django-backend/static # only static files (css, js...)
 
-    command: gunicorn boocs.wsgi --bind 0.0.0.0:8000
+    command: ./ops/deploy.sh
 
   nginx:
-    image: nginx:1.19.2-alpine
-    container_name: boocs-nginx
     restart: unless-stopped
+    build: ./ops/nginx/
+    container_name: boocs-nginx
     ports:
-      - "80:80" # Front
+      - "80:80"
       - "443:443"
-      - "1080:1080" # Back
-      - "1443:1443"
     volumes:
-      - ./ops/nginx:/etc/nginx/conf.d
-      #- ./data/certs:/etc/letsencrypt/live/macif/
+      - ./static:/www/static
+    #volumes:
+    #- ./ops/nginx:/etc/nginx/
+    #- ./data/certs:/etc/letsencrypt/live/macif/
     networks:
       - boocsnet
 
