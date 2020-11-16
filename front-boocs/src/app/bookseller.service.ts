@@ -8,7 +8,7 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class BooksellerService {
-  private apiUrl = 'http://127.0.0.1:8000/api/books';
+  private apiUrl = 'http://0.0.0.0:8000/api/books';
 
   constructor(private http: HttpClient) {}
 
