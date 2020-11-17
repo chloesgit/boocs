@@ -5,8 +5,8 @@ server {
     server_name boocs.cs-campus.fr;
     charset utf-8;
 
-    location /static {
-        root /www/static;
+    location /static/ {
+        root /www;
     }
 
     location / {
