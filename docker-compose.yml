@@ -4,7 +4,6 @@ services:
   django:
     build:
       context: .
-      dockerfile: Dockerfile
     container_name: boocs-django
     restart: unless-stopped
     ports:
