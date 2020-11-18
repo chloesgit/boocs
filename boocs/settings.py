@@ -27,7 +27,7 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'boocs.cs-campus.fr']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'boocs.cs-campus.fr', '138.195.139.83']
 
 
 # Application definition
