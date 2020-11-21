@@ -1,0 +1,37 @@
+version: "3.3"
+
+services:
+  django:
+    build:
+      context: .
+    container_name: boocs-django
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    networks:
+      - boocsnet
+    volumes: # Persisting files even after removing/stopping the container
+      - ./:/django-backend/ # whole folder (useful for hot refresh in dev)
+      #- ./data:/django-backend/data # only database
+      #- ./static:/django-backend/static # only static files (css, js...)
+
+    command: ./ops/deploy.sh
+
+  nginx:
+    restart: unless-stopped
+    build: ./ops/nginx/
+    container_name: boocs-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./static:/www/static
+    #volumes:
+    #- ./ops/nginx:/etc/nginx/
+    #- ./data/certs:/etc/letsencrypt/live/macif/
+    networks:
+      - boocsnet
+
+networks:
+  boocsnet:
+    driver: bridge
