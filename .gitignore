@@ -90,6 +90,6 @@ db.sqlite3
 
 
 # Personnal ignored
-local_settings.py
+settings_*.py
 static
 env

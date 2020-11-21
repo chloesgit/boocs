@@ -12,20 +12,36 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 from .local_settings import secret_key
+from .settings_env import env
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+if env.situation == "prod":
+    from .settings_prod import (  # noqa # pylint: disable=unused-import, no-name-in-module
+        CSRF_COOKIE_SECURE,
+        DEBUG,
+        SECRET_KEY,
+        SECURE_HSTS_INCLUDE_SUBDOMAINS,
+        SECURE_HSTS_PRELOAD,
+        SECURE_HSTS_SECONDS,
+        SECURE_SSL_REDIRECT,
+        SESSION_COOKIE_SECURE,
+    )
+elif env.situation == "local":
+    from .settings_local import (  # noqa # pylint: disable=unused-import, no-name-in-module
+        DEBUG,
+        SECRET_KEY,
+    )
+else:
+    raise Exception("Environment not properly declared. Please create a settings_env.py file and a variable env='prod|local|ci' ")
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret_key
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'boocs.cs-campus.fr', '138.195.139.83']
 
